@@ -1,0 +1,35 @@
+const express = require("express");
+const fetch = require("node-fetch");
+const cors = require("cors");
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+const TOKEN = process.env.TOKEN;
+
+app.post("/createInvoice", async (req, res) => {
+  const r = await fetch("https://pay.crypt.bot/api/createInvoice", {
+    method: "POST",
+    headers: {
+      "Crypto-Pay-API-Token": TOKEN,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(req.body)
+  });
+  res.json(await r.json());
+});
+
+app.post("/checkInvoice", async (req, res) => {
+  const r = await fetch("https://pay.crypt.bot/api/getInvoices", {
+    method: "POST",
+    headers: {
+      "Crypto-Pay-API-Token": TOKEN,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(req.body)
+  });
+  res.json(await r.json());
+});
+
+app.listen(3000);
